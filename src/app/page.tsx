@@ -21,8 +21,8 @@ export default function HomePage() {
     error: latestError,
     refetch: refetchLatest 
   } = useNews({ 
-    limit: 20,
-    autoRefresh: true 
+    limit: 100,
+    autoRefresh: false 
   });
 
   // Search hook
@@ -78,9 +78,25 @@ export default function HomePage() {
             <div className="flex items-center space-x-4">
               <button
                 onClick={refetchLatest}
-                className="px-4 py-2 text-sm text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-md transition-colors"
+                disabled={latestLoading}
+                className="px-6 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
               >
-                Refresh
+                {latestLoading ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Loading...</span>
+                  </>
+                ) : (
+                  <>
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span>Refresh News</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -136,9 +152,11 @@ export default function HomePage() {
                   <h2 className="text-xl font-semibold text-gray-900">
                     Latest News
                   </h2>
-                  <span className="text-sm text-gray-500">
-                    {latestArticles.length} articles
-                  </span>
+                  <div className="flex items-center space-x-4">
+                    <span className="text-sm text-gray-500">
+                      {latestArticles.length} articles loaded (up to 100)
+                    </span>
+                  </div>
                 </div>
 
                 {latestError && (
@@ -179,10 +197,16 @@ export default function HomePage() {
                       <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                       </svg>
-                      <h3 className="mt-2 text-sm font-medium text-gray-900">No articles available</h3>
+                      <h3 className="mt-2 text-sm font-medium text-gray-900">No articles loaded</h3>
                       <p className="mt-1 text-sm text-gray-500">
-                        Try refreshing the page or check back later.
+                        Click the "Refresh" button above to load the latest news articles.
                       </p>
+                      <button
+                        onClick={refetchLatest}
+                        className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                      >
+                        Load Latest News
+                      </button>
                     </div>
                   )}
                 </div>
