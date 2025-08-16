@@ -268,7 +268,7 @@ export function SearchInterface({
             Found {results.totalCount} article{results.totalCount !== 1 ? 's' : ''} 
             {results.processingTime && ` in ${results.processingTime}ms`}
           </span>
-          <span>Showing results for "{results.query}"</span>
+          <span>Showing results for &ldquo;{results.query}&rdquo;</span>
         </div>
       )}
     </div>

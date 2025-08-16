@@ -1,12 +1,12 @@
 import type { NewsArticle, SearchResult, FactCheckResult, EmbeddingResponse } from './news';
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: {
     message: string;
     code: string;
-    details?: any;
+    details?: unknown;
   };
   meta?: {
     timestamp: string;
@@ -24,7 +24,9 @@ export interface FetchNewsRequest {
   since?: string;
 }
 
-export interface FetchNewsResponse extends ApiResponse<NewsArticle[]> {}
+export interface FetchNewsResponse extends ApiResponse<NewsArticle[]> {
+  // Extends ApiResponse with NewsArticle[] data
+}
 
 export interface SearchNewsRequest {
   query: string;
@@ -38,7 +40,9 @@ export interface SearchNewsRequest {
   limit?: number;
 }
 
-export interface SearchNewsResponse extends ApiResponse<SearchResult> {}
+export interface SearchNewsResponse extends ApiResponse<SearchResult> {
+  // Extends ApiResponse with SearchResult data
+}
 
 export interface FactCheckRequest {
   articleId?: string;
@@ -46,7 +50,9 @@ export interface FactCheckRequest {
   text?: string;
 }
 
-export interface FactCheckResponse extends ApiResponse<FactCheckResult> {}
+export interface FactCheckResponse extends ApiResponse<FactCheckResult> {
+  // Extends ApiResponse with FactCheckResult data
+}
 
 // Embeddings API
 export interface CreateEmbeddingRequest {
@@ -54,7 +60,9 @@ export interface CreateEmbeddingRequest {
   model?: string;
 }
 
-export interface CreateEmbeddingResponse extends ApiResponse<EmbeddingResponse> {}
+export interface CreateEmbeddingResponse extends ApiResponse<EmbeddingResponse> {
+  // Extends ApiResponse with EmbeddingResponse data
+}
 
 // Health Check
 export interface HealthCheckResponse extends ApiResponse<{
@@ -67,7 +75,9 @@ export interface HealthCheckResponse extends ApiResponse<{
   };
   timestamp: string;
   uptime: number;
-}> {}
+}> {
+  // Extends ApiResponse with health check data
+}
 
 // Analytics
 export interface AnalyticsData {

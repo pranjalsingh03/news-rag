@@ -103,7 +103,7 @@ export function getCredibilityLabel(score: number): string {
   return "Very Low Credibility";
 }
 
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   delay: number
 ): (...args: Parameters<T>) => void {
@@ -114,17 +114,19 @@ export function debounce<T extends (...args: any[]) => any>(
   };
 }
 
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
-): (...args: Parameters<T>) => void {
+): (...args: Parameters<T>) => ReturnType<T> | undefined {
   let inThrottle: boolean;
   return (...args: Parameters<T>) => {
     if (!inThrottle) {
-      func(...args);
+      const result = func(...args);
       inThrottle = true;
       setTimeout(() => (inThrottle = false), limit);
+      return result as ReturnType<T>;
     }
+    return undefined;
   };
 }
 

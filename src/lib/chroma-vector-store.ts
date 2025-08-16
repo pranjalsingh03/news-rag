@@ -49,7 +49,7 @@ export class ChromaVectorStore {
       }
     }
 
-    return this.collection!;
+    return this.collection;
   }
 
   async upsertArticle(article: NewsArticle, embedding: number[]): Promise<void> {

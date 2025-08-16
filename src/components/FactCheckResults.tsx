@@ -125,7 +125,7 @@ export function FactCheckResults({
         <div className="mb-6">
           <h4 className="text-sm font-medium text-gray-700 mb-2">Claim</h4>
           <p className="text-gray-900 bg-gray-50 p-3 rounded-lg border border-gray-200">
-            "{result.claim}"
+            &ldquo;{result.claim}&rdquo;
           </p>
         </div>
 

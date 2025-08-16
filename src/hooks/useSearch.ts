@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { SearchResult } from '~/types';
+import type { SearchResult, NewsArticle } from '~/types';
 
 interface UseSearchOptions {
   debounceMs?: number;
@@ -57,16 +57,16 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
+      const data = await response.json() as { success: boolean; data: SearchResult; error?: { message: string } };
 
       if (!data.success) {
-        throw new Error(data.error?.message || 'Search failed');
+        throw new Error(data.error?.message ?? 'Search failed');
       }
 
       // Transform publishedAt strings to Date objects
       const transformedData = {
         ...data.data,
-        articles: data.data.articles.map((article: any) => ({
+        articles: data.data.articles.map((article: NewsArticle) => ({
           ...article,
           publishedAt: new Date(article.publishedAt),
         })),
@@ -87,11 +87,11 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
     setError(null);
   }, []);
 
-  // Debounced search function
-  const debouncedSearch = useCallback(
-    debounce(search, debounceMs),
-    [search, debounceMs]
-  );
+  // Remove the unused debouncedSearch
+  // const debouncedSearch = useCallback(
+  //   debounce(search, debounceMs),
+  //   [search, debounceMs]
+  // );
 
   return {
     results,
@@ -129,7 +129,7 @@ export function useAdvancedSearch() {
     if (minCredibility !== undefined) filters.minCredibility = minCredibility;
 
     await searchHook.search(query, filters);
-  }, [searchHook.search]);
+  }, [searchHook]);
 
   return {
     ...searchHook,
@@ -138,7 +138,7 @@ export function useAdvancedSearch() {
 }
 
 // Simple debounce utility
-function debounce<T extends (...args: any[]) => any>(
+function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   delay: number
 ): (...args: Parameters<T>) => void {

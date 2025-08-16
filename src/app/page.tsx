@@ -199,7 +199,7 @@ export default function HomePage() {
                       </svg>
                       <h3 className="mt-2 text-sm font-medium text-gray-900">No articles loaded</h3>
                       <p className="mt-1 text-sm text-gray-500">
-                        Click the "Refresh" button above to load the latest news articles.
+                        Click the &ldquo;Refresh&rdquo; button above to load the latest news articles.
                       </p>
                       <button
                         onClick={refetchLatest}

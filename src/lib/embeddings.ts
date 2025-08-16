@@ -20,7 +20,7 @@ export class EmbeddingsService {
     // Combine title, summary, and content for better semantic representation
     const combinedText = [
       title,
-      summary || '',
+      summary ?? '',
       content.substring(0, 8000), // Limit content to avoid token limits
     ].filter(Boolean).join('\n\n');
 
@@ -84,7 +84,7 @@ export class EmbeddingsService {
     }
 
     // Should not be mostly numbers or special characters
-    const alphaRatio = (cleaned.match(/[a-z]/g) || []).length / cleaned.length;
+    const alphaRatio = (cleaned.match(/[a-z]/g) ?? []).length / cleaned.length;
     if (alphaRatio < 0.5) {
       return false;
     }
@@ -97,8 +97,6 @@ export class EmbeddingsService {
 let embeddingsService: EmbeddingsService | null = null;
 
 export function getEmbeddingsService(): EmbeddingsService {
-  if (!embeddingsService) {
-    embeddingsService = new EmbeddingsService();
-  }
+  embeddingsService ??= new EmbeddingsService();
   return embeddingsService;
 }

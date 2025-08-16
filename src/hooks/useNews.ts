@@ -62,10 +62,10 @@ export function useNews(options: UseNewsOptions = {}): UseNewsReturn {
       const data = await response.json();
 
       if (!data.success) {
-        throw new Error(data.error?.message || 'Failed to fetch news');
+        throw new Error(data.error?.message ?? 'Failed to fetch news');
       }
 
-      const newArticles = (data.data || []).map((article: any) => ({
+      const newArticles = (data.data ?? []).map((article: NewsArticle) => ({
         ...article,
         publishedAt: new Date(article.publishedAt),
       }));
@@ -101,16 +101,18 @@ export function useNews(options: UseNewsOptions = {}): UseNewsReturn {
   useEffect(() => {
     // Only fetch on mount if autoRefresh is enabled, otherwise wait for manual trigger
     if (autoRefresh) {
-      fetchNews();
+      void fetchNews();
     }
-  }, [sources?.join(','), category, keywords?.join(','), limit]);
+  }, [autoRefresh, fetchNews, sources?.join(','), category, keywords?.join(','), limit]);
 
   useEffect(() => {
     if (autoRefresh && refreshInterval > 0) {
-      const interval = setInterval(refetch, refreshInterval);
+      const interval = setInterval(() => {
+        void refetch();
+      }, refreshInterval);
       return () => clearInterval(interval);
     }
-  }, [autoRefresh, refreshInterval]);
+  }, [autoRefresh, refreshInterval, refetch]);
 
   return {
     articles,
