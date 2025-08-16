@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "next build",
+    "build:analyze": "ANALYZE=true next build",
     "check": "next lint && tsc --noEmit",
     "dev": "next dev --turbo",
     "dev:full": "npm run chroma:start && npm run dev",
@@ -16,10 +17,11 @@
     "lint:fix": "next lint --fix",
     "preview": "next build && next start",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "deploy": "vercel --prod",
+    "deploy:preview": "vercel"
   },
   "dependencies": {
-    "@chroma-core/default-embed": "^0.1.8",
     "@google/generative-ai": "^0.7.1",
     "@prisma/client": "^5.6.0",
     "@supabase/supabase-js": "^2.38.0",

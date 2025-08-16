@@ -1,0 +1,21 @@
+{
+  "functions": {
+    "src/app/api/news/search/route.ts": {
+      "maxDuration": 30
+    },
+    "src/app/api/news/fetch/route.ts": {
+      "maxDuration": 30
+    },
+    "src/app/api/news/fact-check/route.ts": {
+      "maxDuration": 30
+    },
+    "src/app/api/embeddings/route.ts": {
+      "maxDuration": 30
+    }
+  },
+  "build": {
+    "env": {
+      "SKIP_ENV_VALIDATION": "1"
+    }
+  }
+}
